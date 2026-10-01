@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portofolio Saya</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+  :root {
+    --red: #dc2626; --red-dark: #991b1b; --red-light: #fee2e2;
+    --white: #ffffff; --off-white: #fafafa; --text: #1a1a1a;
+    --muted: #6b7280; --border: #e5e7eb;
+    --shadow: 0 10px 30px rgba(220, 38, 38, 0.08);
+    --shadow-hover: 0 20px 50px rgba(220, 38, 38, 0.15);
+    --admin: #10b981; --admin-dark: #059669;
+  }
+  body { min-height: 100vh; background: var(--off-white); color: var(--text); overflow-x: hidden; position: relative; }
+  body::before, body::after {
+    content: ''; position: fixed; width: 500px; height: 500px;
+    border-radius: 50%; filter: blur(120px); opacity: 0.25; z-index: 0;
+    animation: float 20s infinite ease-in-out; pointer-events: none;
+  }
+  body::before { background: var(--red); top: -100px; left: -100px; }
+  body::after { background: #fca5a5; bottom: -100px; right: -100px; animation-delay: -10s; }
+  @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(100px, 50px) scale(1.1); } }
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
+
+  /* ADMIN BANNER */
+  .admin-banner {
+    background: linear-gradient(135deg, var(--admin), var(--admin-dark));
+    color: white; padding: 12px 20px; border-radius: 16px;
+    margin-bottom: 20px; display: none; align-items: center;
+    justify-content: space-between; gap: 15px; flex-wrap: wrap;
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+  }
+  .admin-banner.active { display: flex; }
+  .admin-banner p { font-size: 0.9rem; flex: 1; min-width: 200px; }
+  .admin-banner .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 28px; background: var(--white); border: 1px solid var(--border);
+    border-radius: 20px; margin-bottom: 40px; box-shadow: var(--shadow);
+  }
+  .logo {
+    font-size: 1.5rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-weight: 500; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--red); }
+
+  .btn {
+    padding: 10px 20px; border: none; border-radius: 12px; font-weight: 600;
+    cursor: pointer; transition: all 0.3s; font-size: 0.9rem;
+    display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    color: white; box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(220, 38, 38, 0.4); }
+  .btn-secondary { background: var(--white); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--red); color: var(--red); }
+  .btn-danger { background: var(--red); color: white; }
+  .btn-admin {
+    background: linear-gradient(135deg, var(--admin), var(--admin-dark));
+    color: white; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+  }
+  .btn-admin:hover { transform: translateY(-2px); }
+  .btn-small { padding: 8px 14px; font-size: 0.85rem; }
+  .btn-icon { width: 36px; height: 36px; padding: 0; justify-content: center; }
+  .admin-only { display: none !important; }
+  body.admin-mode .admin-only { display: inline-flex !important; }
+
+  .hero {
+    display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center;
+    padding: 50px 40px; background: var(--white); border: 1px solid var(--border);
+    border-radius: 24px; margin-bottom: 40px; box-shadow: var(--shadow); position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: 0; right: 0; width: 300px; height: 300px;
+    background: linear-gradient(135deg, var(--red-light), transparent);
+    border-radius: 50%; transform: translate(100px, -100px);
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-block; padding: 6px 16px; background: var(--red-light);
+    color: var(--red); border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-bottom: 15px;
+  }
+  .hero h1 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 10px; line-height: 1.2; }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .title { font-size: 1.2rem; color: var(--muted); margin-bottom: 15px; font-weight: 500; }
+  .hero .bio { color: var(--muted); line-height: 1.7; margin-bottom: 25px; max-width: 500px; }
+  .hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-photo {
+    width: 200px; height: 200px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem; color: white; border: 6px solid var(--white);
+    box-shadow: 0 10px 40px rgba(220, 38, 38, 0.3); overflow: hidden;
+    position: relative; z-index: 1; cursor: default;
+  }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+  body.admin-mode .hero-photo { cursor: pointer; }
+  body.admin-mode .hero-photo:hover::after {
+    content: '📷'; position: absolute; inset: 0;
+    background: rgba(0,0,0,0.5); display: flex;
+    align-items: center; justify-content: center; font-size: 3rem;
+  }
+
+  .section { margin-bottom: 50px; }
+  .section-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 25px; flex-wrap: wrap; gap: 15px;
+  }
+  .section-title { font-size: 1.8rem; font-weight: 700; position: relative; }
+  .section-title::after {
+    content: ''; display: block; width: 50px; height: 4px;
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    border-radius: 2px; margin-top: 8px;
+  }
+
+  .biodata-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+  .biodata-item {
+    background: var(--white); border: 1px solid var(--border); border-radius: 16px;
+    padding: 18px 20px; display: flex; align-items: center; gap: 15px; transition: all 0.3s;
+  }
+  .biodata-item:hover { border-color: var(--red); transform: translateY(-3px); box-shadow: var(--shadow); }
+  .biodata-icon {
+    width: 45px; height: 45px; background: var(--red-light); color: var(--red);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+  }
+  .biodata-info { flex: 1; min-width: 0; }
+  .biodata-label { font-size: 0.8rem; color: var(--muted); margin-bottom: 2px; }
+  .biodata-value { font-weight: 600; color: var(--text); word-break: break-word; }
+  .biodata-value a { color: var(--text); text-decoration: none; transition: color 0.3s; }
+  .biodata-value a:hover { color: var(--red); }
+
+  .socials { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .social-link {
+    width: 45px; height: 45px; background: var(--white); border: 1px solid var(--border);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    color: var(--text); text-decoration: none; font-size: 1.2rem; transition: all 0.3s;
+  }
+  .social-link:hover { background: var(--red); color: white; border-color: var(--red); transform: translateY(-3px); }
+
+  /* CV SECTION */
+  .cv-container {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 20px; padding: 30px; box-shadow: var(--shadow);
+  }
+  .cv-block { margin-bottom: 30px; }
+  .cv-block:last-child { margin-bottom: 0; }
+  .cv-block-title {
+    font-size: 1.2rem; font-weight: 700; color: var(--red);
+    margin-bottom: 15px; display: flex; align-items: center; gap: 10px;
+    padding-bottom: 10px; border-bottom: 2px solid var(--red-light);
+  }
+  .cv-item {
+    padding: 15px; background: var(--off-white); border-radius: 12px;
+    margin-bottom: 10px; border-left: 4px solid var(--red); position: relative;
+  }
+  .cv-item-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 5px; }
+  .cv-item-title { font-weight: 700; color: var(--text); }
+  .cv-item-period {
+    font-size: 0.85rem; color: var(--red); font-weight: 600;
+    background: var(--red-light); padding: 2px 10px; border-radius: 10px;
+  }
+  .cv-item-subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 5px; font-style: italic; }
+  .cv-item-desc { color: var(--text); font-size: 0.9rem; line-height: 1.6; }
+  .cv-item-actions {
+    position: absolute; top: 10px; right: 10px;
+    display: none; gap: 5px;
+  }
+  body.admin-mode .cv-item-actions { display: flex; }
+
+  .skills-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+  .skill-tag {
+    background: var(--white); border: 1px solid var(--border); padding: 10px 18px;
+    border-radius: 25px; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: all 0.3s;
+  }
+  .skill-tag:hover { border-color: var(--red); color: var(--red); }
+  .skill-tag .remove-skill {
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    width: 18px; height: 18px; border-radius: 50%; display: none;
+    align-items: center; justify-content: center; transition: all 0.3s; font-size: 0.8rem;
+  }
+  body.admin-mode .skill-tag .remove-skill { display: flex; }
+  .skill-tag .remove-skill:hover { background: var(--red); color: white; }
+
+  .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
+  .filter-btn {
+    padding: 8px 18px; background: var(--white); border: 1px solid var(--border);
+    color: var(--muted); border-radius: 20px; cursor: pointer; font-size: 0.9rem;
+    font-weight: 500; transition: all 0.3s;
+  }
+  .filter-btn:hover { color: var(--red); border-color: var(--red); }
+  .filter-btn.active { background: linear-gradient(135deg, var(--red), var(--red-dark)); color: white; border-color: transparent; }
+
+  .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+  .portfolio-card {
+    background: var(--white); border: 1px solid var(--border); border-radius: 20px;
+    overflow: hidden; transition: all 0.4s; animation: fadeIn 0.5s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .portfolio-card:hover { transform: translateY(-8px); border-color: var(--red); box-shadow: var(--shadow-hover); }
+  .card-image {
+    width: 100%; height: 200px; background: linear-gradient(135deg, var(--red), var(--red-dark));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; color: white; overflow: hidden; position: relative;
+  }
+  .card-image img { width: 100%; height: 100%; object-fit: cover; }
+  .card-body { padding: 20px; }
+  .card-category {
+    display: inline-block; padding: 4px 12px; background: var(--red-light);
+    color: var(--red); border-radius: 10px; font-size: 0.75rem; font-weight: 600; margin-bottom: 10px;
+  }
+  .card-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+  .card-desc {
+    color: var(--muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 15px;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .empty {
+    text-align: center; padding: 60px 20px; color: var(--muted);
+    background: var(--white); border: 1px dashed var(--border); border-radius: 20px;
+    grid-column: 1/-1;
+  }
+  .empty-icon { font-size: 4rem; margin-bottom: 15px; opacity: 0.5; }
+
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
+    display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px;
+  }
+  .modal-overlay.active { display: flex; animation: fadeIn 0.3s; }
+  .modal {
+    background: var(--white); border: 1px solid var(--border); border-radius: 20px;
+    padding: 30px; width: 100%; max-width: 550px; max-height: 90vh; overflow-y: auto;
+  }
+  .modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border);
+  }
+  .modal-title { font-size: 1.4rem; font-weight: 700; color: var(--red); }
+  .close-btn {
+    background: var(--off-white); border: none; color: var(--muted);
+    font-size: 1.2rem; cursor: pointer; width: 36px; height: 36px;
+    border-radius: 10px; transition: all 0.3s;
+  }
+  .close-btn:hover { background: var(--red-light); color: var(--red); }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.85rem; }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; padding: 11px 14px; background: var(--off-white);
+    border: 1px solid var(--border); border-radius: 10px; color: var(--text);
+    font-size: 0.95rem; transition: all 0.3s; font-family: inherit;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    outline: none; border-color: var(--red); background: var(--white);
+    box-shadow: 0 0 0 3px var(--red-light);
+  }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border); }
+
+  /* IMAGE UPLOAD */
+  .image-upload {
+    border: 2px dashed var(--border); border-radius: 12px;
+    padding: 20px; text-align: center; cursor: pointer;
+    transition: all 0.3s; background: var(--off-white);
+  }
+  .image-upload:hover { border-color: var(--red); background: var(--red-light); }
+  .image-upload.has-image { padding: 0; border-style: solid; }
+  .image-upload img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; display: block; }
+  .image-upload input { display: none; }
+  .image-upload-label { color: var(--muted); font-size: 0.9rem; }
+  .image-upload-label strong { color: var(--red); }
+
+  footer {
+    text-align: center; padding: 30px 20px; color: var(--muted);
+    border-top: 1px solid var(--border); margin-top: 40px;
+  }
+  footer span { color: var(--red); font-weight: 600; }
+  .admin-login-trigger {
+    display: inline-block; margin-top: 10px; font-size: 0.75rem;
+    color: var(--muted); cursor: pointer; opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+  .admin-login-trigger:hover { opacity: 1; color: var(--red); }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; text-align: center; padding: 30px 20px; }
+    .hero-photo { width: 150px; height: 150px; font-size: 3.5rem; margin: 0 auto; order: -1; }
+    .hero-buttons { justify-content: center; }
+    .hero .bio { margin-left: auto; margin-right: auto; }
+    nav { padding: 15px 20px; }
+    .nav-links a:not(.btn) { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+    .cv-container { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- ADMIN BANNER -->
+  <div class="admin-banner" id="adminBanner">
+    <p>🔓 <strong>Mode Admin Aktif</strong> — Anda dapat mengedit semua bagian. Klik "Update Website" untuk menyimpan perubahan.</p>
+    <div class="btn-group">
+      <button class="btn btn-admin btn-small" onclick="updateWebsite()">🔄 Update Website</button>
+      <button class="btn btn-secondary btn-small" onclick="logoutAdmin()">🚪 Logout</button>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">🇮🇩 MyPortfolio</div>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#biodata">Biodata</a>
+      <a href="#cv">CV</a>
+      <a href="#portfolio">Portofolio</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <span class="hero-badge" id="heroBadge">✨ Selamat Datang</span>
+      <h1>Halo, Saya <span id="heroName">Nama Anda</span></h1>
+      <p class="title" id="heroTitle">Web Developer & Designer</p>
+      <p class="bio" id="heroBio">Seorang developer & designer yang bersemangat menciptakan pengalaman digital yang indah dan fungsional.</p>
+      <div class="hero-buttons">
+        <button class="btn btn-primary admin-only" onclick="openSettings()">⚙️ Edit Profil</button>
+        <button class="btn btn-primary admin-only" onclick="openPortfolioModal()">➕ Tambah Portofolio</button>
+        <a href="#portfolio" class="btn btn-secondary">Lihat Karya</a>
+      </div>
+    </div>
+    <div class="hero-photo" id="heroPhoto" onclick="triggerPhotoUpload()">👤</div>
+    <input type="file" id="photoUpload" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)">
+  </section>
+
+  <!-- BIODATA -->
+  <section class="section" id="biodata">
+    <div class="section-header">
+      <h2 class="section-title">📋 Biodata</h2>
+      <button class="btn btn-secondary btn-small admin-only" onclick="openSettings()">✏️ Edit</button>
+    </div>
+    <div class="biodata-grid" id="biodataGrid"></div>
+    <div class="socials" id="socialsContainer"></div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">🚀 Keahlian</h2>
+      <button class="btn btn-secondary btn-small admin-only" onclick="addSkill()">➕ Tambah Skill</button>
+    </div>
+    <div class="skills-grid" id="skillsGrid"></div>
+  </section>
+
+  <!-- CV -->
+  <section class="section" id="cv">
+    <div class="section-header">
+      <h2 class="section-title">📄 Curriculum Vitae</h2>
+      <button class="btn btn-secondary btn-small admin-only" onclick="openCVModal()">✏️ Edit CV</button>
+    </div>
+    <div class="cv-container" id="cvContainer"></div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section class="section" id="portfolio">
+    <div class="section-header">
+      <h2 class="section-title">💼 Portofolio</h2>
+      <button class="btn btn-primary btn-small admin-only" onclick="openPortfolioModal()">➕ Tambah</button>
+    </div>
+    <div class="filter-bar" id="filterBar"></div>
+    <div class="portfolio-grid" id="portfolioGrid"></div>
+  </section>
+
+  <footer>
+    <p>© 2026 <span id="footerName">MyPortfolio</span>. Dibuat dengan ❤️ di Indonesia 🇮🇩</p>
+    <span class="admin-login-trigger" onclick="openLoginModal()">🔐 Admin Login</span>
+  </footer>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal" style="max-width: 400px;">
+    <div class="modal-header">
+      <h3 class="modal-title">🔐 Login Admin</h3>
+      <button class="close-btn" onclick="closeLoginModal()">✕</button>
+    </div>
+    <form id="loginForm">
+      <div class="form-group">
+        <label>Password Admin</label>
+        <input type="password" id="loginPassword" required placeholder="Masukkan password" />
+        <small style="color:var(--muted);font-size:0.8rem;margin-top:5px;display:block;">
+          💡 Password default: <strong>admin123</strong> (ubah setelah login pertama)
+        </small>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeLoginModal()">Batal</button>
+        <button type="submit" class="btn btn-admin">🔓 Login</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">⚙️ Pengaturan Profil</h3>
+      <button class="close-btn" onclick="closeSettings()">✕</button>
+    </div>
+    <form id="settingsForm">
+      <div class="form-group"><label>Badge / Sapaan</label><input type="text" id="setBadge" /></div>
+      <div class="form-group"><label>Nama Lengkap *</label><input type="text" id="setName" required /></div>
+      <div class="form-group"><label>Profesi / Title *</label><input type="text" id="setTitle" required /></div>
+      <div class="form-group"><label>Bio Singkat *</label><textarea id="setBio" required></textarea></div>
+      <div class="form-group">
+        <label>Foto Profil</label>
+        <div class="image-upload" id="photoUploadBox" onclick="document.getElementById('photoUpload2').click()">
+          <div class="image-upload-label" id="photoUploadLabel">
+            📷 <strong>Klik untuk upload</strong> atau ganti foto
+          </div>
+          <input type="file" id="photoUpload2" accept="image/*" onchange="handlePhotoUpload2(event)">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>📍 Lokasi</label><input type="text" id="setLocation" /></div>
+        <div class="form-group"><label>📧 Email</label><input type="email" id="setEmail" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>📱 Telepon</label><input type="text" id="setPhone" /></div>
+        <div class="form-group"><label>🎂 Tanggal Lahir</label><input type="text" id="setBirth" /></div>
+      </div>
+      <div class="form-group"><label>🎓 Pendidikan Terakhir</label><input type="text" id="setEducation" /></div>
+      <div class="form-group"><label>💼 Pengalaman Singkat</label><input type="text" id="setExperience" /></div>
+      <h4 style="margin: 20px 0 15px; color: var(--red);">🔗 Media Sosial</h4>
+      <div class="form-row">
+        <div class="form-group"><label>GitHub</label><input type="url" id="setGithub" /></div>
+        <div class="form-group"><label>LinkedIn</label><input type="url" id="setLinkedin" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Instagram</label><input type="url" id="setInstagram" /></div>
+        <div class="form-group"><label>Twitter / X</label><input type="url" id="setTwitter" /></div>
+      </div>
+      <div class="form-group"><label>Website Pribadi</label><input type="url" id="setWebsite" /></div>
+      <div class="form-group">
+        <label>🔑 Ubah Password Admin (opsional)</label>
+        <input type="password" id="setPassword" placeholder="Kosongkan jika tidak ingin mengubah" />
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeSettings()">Batal</button>
+        <button type="submit" class="btn btn-primary">💾 Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- PORTFOLIO MODAL -->
+<div class="modal-overlay" id="portfolioModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="portfolioModalTitle">➕ Tambah Portofolio</h3>
+      <button class="close-btn" onclick="closePortfolioModal()">✕</button>
+    </div>
+    <form id="portfolioForm">
+      <input type="hidden" id="editId" />
+      <div class="form-group">
+        <label>Gambar Proyek</label>
+        <div class="image-upload" id="portfolioImageBox" onclick="document.getElementById('portfolioImageInput').click()">
+          <div class="image-upload-label" id="portfolioImageLabel">
+            🖼️ <strong>Klik untuk upload gambar</strong><br>
+            <small>Max 2MB, format JPG/PNG</small>
+          </div>
+          <input type="file" id="portfolioImageInput" accept="image/*" onchange="handlePortfolioImage(event)">
+        </div>
+      </div>
+      <div class="form-group"><label>Judul Proyek *</label><input type="text" id="pTitle" required /></div>
+      <div class="form-group">
+        <label>Kategori *</label>
+        <select id="pCategory" required>
+          <option value="">Pilih kategori</option>
+          <option value="Web">Web</option>
+          <option value="Mobile">Mobile</option>
+          <option value="Design">Design</option>
+          <option value="UI/UX">UI/UX</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Deskripsi *</label><textarea id="pDescription" required></textarea></div>
+      <div class="form-group"><label>Teknologi yang Digunakan</label><input type="text" id="pTech" placeholder="React, Node.js, MySQL" /></div>
+      <div class="form-group"><label>Link Proyek / Demo</label><input type="url" id="pLink" /></div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" onclick="closePortfolioModal()">Batal</button>
+        <button type="submit" class="btn btn-primary">💾 Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- CV MODAL -->
+<div class="modal-overlay" id="cvModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">📄 Edit CV</h3>
+      <button class="close-btn" onclick="closeCVModal()">✕</button>
+    </div>
+    <div style="margin-bottom:20px;">
+      <button class="btn btn-primary btn-small" onclick="addCVItem('experience')">➕ Pengalaman Kerja</button>
+      <button class="btn btn-primary btn-small" onclick="addCVItem('education')">➕ Pendidikan</button>
+      <button class="btn btn-primary btn-small" onclick="addCVItem('certification')">➕ Sertifikasi</button>
+      <button class="btn btn-primary btn-small" onclick="addCVItem('language')">➕ Bahasa</button>
+    </div>
+    <div id="cvEditList"></div>
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" onclick="closeCVModal()">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============ DATA ============
+  const DEFAULT_DATA = {
+    admin: { passwordHash: '' },
+    profile: {
+      badge: '✨ Selamat Datang', name: 'Budi Santoso',
+      title: 'Web Developer & UI Designer',
+      bio: 'Seorang developer & designer yang bersemangat menciptakan pengalaman digital yang indah dan fungsional.',
+      photo: '', location: 'Jakarta, Indonesia', email: 'budi@example.com',
+      phone: '+62 812 3456 7890', birth: '1 Januari 2000',
+      education: 'S1 Teknik Informatika - Universitas Indonesia',
+      experience: '3+ tahun sebagai Web Developer',
+      socials: { github: '', linkedin: '', instagram: '', twitter: '', website: '' }
+    },
+    skills: ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'UI/UX Design', 'Figma'],
+    cv: {
+      experience: [
+        { id: 1, title: 'Senior Web Developer', company: 'PT Teknologi Indonesia', period: '2023 - Sekarang', desc: 'Memimpin tim development untuk membangun aplikasi web enterprise.' }
+      ],
+      education: [
+        { id: 1, title: 'S1 Teknik Informatika', company: 'Universitas Indonesia', period: '2018 - 2022', desc: 'IPK 3.75 - Fokus pada Web Development & UI/UX' }
+      ],
+      certification: [
+        { id: 1, title: 'React Developer Certificate', company: 'Meta', period: '2024', desc: 'Sertifikasi resmi dari Meta untuk React development.' }
+      ],
+      language: [
+        { id: 1, title: 'Bahasa Indonesia', company: 'Native', period: '', desc: '' },
+        { id: 2, title: 'English', company: 'Professional', period: '', desc: 'TOEFL 550' }
+      ]
+    },
+    portfolios: [
+      { id: 1, title: 'Landing Page Modern', category: 'Web', description: 'Landing page responsif untuk startup teknologi dengan animasi smooth.', image: '', link: '', tech: 'HTML, CSS, JavaScript' },
+      { id: 2, title: 'Aplikasi Mobile Banking', category: 'Mobile', description: 'Desain UI/UX untuk aplikasi mobile banking.', image: '', link: '', tech: 'Figma, React Native' },
+      { id: 3, title: 'Brand Identity', category: 'Design', description: 'Pembuatan identitas brand lengkap.', image: '', link: '', tech: 'Illustrator, Photoshop' }
+    ]
+  };
+
+  let data = JSON.parse(localStorage.getItem('portfolioApp')) || JSON.parse(JSON.stringify(DEFAULT_DATA));
+  let currentFilter = 'Semua';
+  let isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+  let tempPortfolioImage = '';
+
+  function saveData() { localStorage.setItem('portfolioApp', JSON.stringify(data)); }
+
+  // ============ PASSWORD HASH ============
+  async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  async function initAdmin() {
+    if (!data.admin.passwordHash) {
+      // Setup password default
+      data.admin.passwordHash = await hashPassword('admin123');
+      saveData();
+    }
+    if (isAdmin) document.body.classList.add('admin-mode');
+    updateAdminBanner();
+  }
+
+  function updateAdminBanner() {
+    document.getElementById('adminBanner').classList.toggle('active', isAdmin);
+  }
+
+  // ============ LOGIN ============
+  function openLoginModal() {
+    if (isAdmin) { alert('Anda sudah login sebagai admin'); return; }
+    document.getElementById('loginModal').classList.add('active');
+  }
+  function closeLoginModal() {
+    document.getElementById('loginModal').classList.remove('active');
+    document.getElementById('loginPassword').value = '';
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const pwd = document.getElementById('loginPassword').value;
+    const hash = await hashPassword(pwd);
+    if (hash === data.admin.passwordHash) {
+      isAdmin = true;
+      sessionStorage.setItem('isAdmin', 'true');
+      document.body.classList.add('admin-mode');
+      updateAdminBanner();
+      closeLoginModal();
+      alert('✅ Login berhasil! Selamat datang, Admin.');
+    } else {
+      alert('❌ Password salah!');
+    }
+  });
+
+  function logoutAdmin() {
+    if (confirm('Logout dari mode admin?')) {
+      isAdmin = false;
+      sessionStorage.removeItem('isAdmin');
+      document.body.classList.remove('admin-mode');
+      updateAdminBanner();
+    }
+  }
+
+  // ============ RENDER HERO ============
+  function renderHero() {
+    const p = data.profile;
+    document.getElementById('heroBadge').textContent = p.badge || '✨ Selamat Datang';
+    document.getElementById('heroName').textContent = p.name;
+    document.getElementById('heroTitle').textContent = p.title;
+    document.getElementById('heroBio').textContent = p.bio;
+    document.getElementById('footerName').textContent = p.name;
+    const photo = document.getElementById('heroPhoto');
+    photo.innerHTML = p.photo ? `<img src="${p.photo}" alt="${p.name}">` : '👤';
+  }
+
+  // ============ RENDER BIODATA ============
+  function renderBiodata() {
+    const p = data.profile;
+    const items = [
+      { icon: '👤', label: 'Nama', value: p.name },
+      { icon: '💼', label: 'Profesi', value: p.title },
+      { icon: '📍', label: 'Lokasi', value: p.location || '-' },
+      { icon: '📧', label: 'Email', value: p.email, link: p.email ? `mailto:${p.email}` : '' },
+      { icon: '📱', label: 'Telepon', value: p.phone, link: p.phone ? `tel:${p.phone.replace(/\s/g,'')}` : '' },
+      { icon: '🎂', label: 'Tanggal Lahir', value: p.birth || '-' },
+      { icon: '🎓', label: 'Pendidikan', value: p.education || '-' },
+      { icon: '💼', label: 'Pengalaman', value: p.experience || '-' }
+    ];
+    document.getElementById('biodataGrid').innerHTML = items.map(item => `
+      <div class="biodata-item">
+        <div class="biodata-icon">${item.icon}</div>
+        <div class="biodata-info">
+          <div class="biodata-label">${item.label}</div>
+          <div class="biodata-value">${item.link ? `<a href="${item.link}">${item.value}</a>` : item.value}</div>
+        </div>
+      </div>
+    `).join('');
+    const socials = [
+      { key: 'github', icon: '🐙' }, { key: 'linkedin', icon: '💼' },
+      { key: 'instagram', icon: '📷' }, { key: 'twitter', icon: '🐦' }, { key: 'website', icon: '🌐' }
+    ];
+    const socialsHtml = socials.filter(s => p.socials[s.key])
+      .map(s => `<a href="${p.socials[s.key]}" target="_blank" class="social-link" title="${s.key}">${s.icon}</a>`).join('');
+    document.getElementById('socialsContainer').innerHTML = socialsHtml || '';
+  }
+
+  // ============ RENDER SKILLS ============
+  function renderSkills() {
+    const grid = document.getElementById('skillsGrid');
+    if (data.skills.length === 0) {
+      grid.innerHTML = '<p style="color:var(--muted);">Belum ada skill.</p>';
+      return;
+    }
+    grid.innerHTML = data.skills.map((skill, idx) => `
+      <div class="skill-tag">${skill}<button class="remove-skill" onclick="removeSkill(${idx})">✕</button></div>
+    `).join('');
+  }
+  function addSkill() {
+    const skill = prompt('Masukkan nama skill:');
+    if (skill && skill.trim()) { data.skills.push(skill.trim()); saveData(); renderSkills(); }
+  }
+  function removeSkill(idx) {
+    if (confirm('Hapus skill ini?')) { data.skills.splice(idx, 1); saveData(); renderSkills(); }
+  }
+
+  // ============ RENDER CV ============
+  function renderCV() {
+    const container = document.getElementById('cvContainer');
+    const sections = [
+      { key: 'experience', title: '💼 Pengalaman Kerja', icon: '💼' },
+      { key: 'education', title: '🎓 Pendidikan', icon: '🎓' },
+      { key: 'certification', title: '🏆 Sertifikasi', icon: '🏆' },
+      { key: 'language', title: '🌐 Bahasa', icon: '🌐' }
+    ];
+    container.innerHTML = sections.map(sec => {
+      const items = data.cv[sec.key] || [];
+      if (items.length === 0) return '';
+      return `
+        <div class="cv-block">
+          <h3 class="cv-block-title">${sec.title}</h3>
+          ${items.map(item => `
+            <div class="cv-item">
+              <div class="cv-item-actions">
+                <button class="btn btn-secondary btn-icon btn-small" onclick="editCVItem('${sec.key}', ${item.id})">✏️</button>
+                <button class="btn btn-danger btn-icon btn-small" onclick="deleteCVItem('${sec.key}', ${item.id})">🗑️</button>
+              </div>
+              <div class="cv-item-header">
+                <div class="cv-item-title">${item.title}</div>
+                ${item.period ? `<div class="cv-item-period">${item.period}</div>` : ''}
+              </div>
+              <div class="cv-item-subtitle">${item.company || ''}</div>
+              ${item.desc ? `<div class="cv-item-desc">${item.desc}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ============ CV MODAL ============
+  function openCVModal() {
+    renderCVEditList();
+    document.getElementById('cvModal').classList.add('active');
+  }
+  function closeCVModal() { document.getElementById('cvModal').classList.remove('active'); }
+
+  function renderCVEditList() {
+    const list = document.getElementById('cvEditList');
+    const sections = [
+      { key: 'experience', title: '💼 Pengalaman Kerja' },
+      { key: 'education', title: '🎓 Pendidikan' },
+      { key: 'certification', title: '🏆 Sertifikasi' },
+      { key: 'language', title: '🌐 Bahasa' }
+    ];
+    list.innerHTML = sections.map(sec => {
+      const items = data.cv[sec.key] || [];
+      return `
+        <div style="margin-bottom:20px;">
+          <h4 style="color:var(--red);margin-bottom:10px;">${sec.title}</h4>
+          ${items.length === 0 ? '<p style="color:var(--muted);font-size:0.9rem;">Belum ada data</p>' :
+            items.map(item => `
+              <div style="background:var(--off-white);padding:12px;border-radius:10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+                <div style="flex:1;min-width:0;">
+                  <div style="font-weight:600;">${item.title}</div>
+                  <div style="color:var(--muted);font-size:0.85rem;">${item.company || ''} ${item.period ? '• ' + item.period : ''}</div>
+                </div>
+                <div style="display:flex;gap:5px;">
+                  <button class="btn btn-secondary btn-icon btn-small" onclick="editCVItem('${sec.key}', ${item.id})">✏️</button>
+                  <button class="btn btn-danger btn-icon btn-small" onclick="deleteCVItem('${sec.key}', ${item.id})">🗑️</button>
+                </div>
+              </div>
+            `).join('')}
+        </div>
+      `;
+    }).join('');
+  }
+
+  function addCVItem(type) {
+    const title = prompt('Judul (contoh: "Web Developer" atau "S1 Teknik Informatika"):');
+    if (!title) return;
+    const company = prompt('Perusahaan / Institusi:') || '';
+    const period = prompt('Periode (contoh: "2023 - Sekarang"):') || '';
+    const desc = prompt('Deskripsi (opsional):') || '';
+    const newId = Date.now();
+    data.cv[type].push({ id: newId, title, company, period, desc });
+    saveData();
+    renderCV();
+    renderCVEditList();
+  }
+
+  function editCVItem(type, id) {
+    const item = data.cv[type].find(i => i.id === id);
+    if (!item) return;
+    const title = prompt('Judul:', item.title);
+    if (title === null) return;
+    const company = prompt('Perusahaan / Institusi:', item.company || '');
+    if (company === null) return;
+    const period = prompt('Periode:', item.period || '');
+    if (period === null) return;
+    const desc = prompt('Deskripsi:', item.desc || '');
+    if (desc === null) return;
+    item.title = title; item.company = company; item.period = period; item.desc = desc;
+    saveData(); renderCV(); renderCVEditList();
+  }
+
+  function deleteCVItem(type, id) {
+    if (confirm('Hapus item ini?')) {
+      data.cv[type] = data.cv[type].filter(i => i.id !== id);
+      saveData(); renderCV(); renderCVEditList();
+    }
+  }
+
+  // ============ RENDER PORTFOLIO ============
+  function renderFilters() {
+    const categories = ['Semua', ...new Set(data.portfolios.map(p => p.category))];
+    document.getElementById('filterBar').innerHTML = categories.map(cat => `
+      <button class="filter-btn ${cat === currentFilter ? 'active' : ''}" onclick="setFilter('${cat}')">${cat}</button>
+    `).join('');
+  }
+  function setFilter(cat) { currentFilter = cat; renderFilters(); renderPortfolio(); }
+
+  function renderPortfolio() {
+    const grid = document.getElementById('portfolioGrid');
+    const filtered = currentFilter === 'Semua' ? data.portfolios : data.portfolios.filter(p => p.category === currentFilter);
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="empty"><div class="empty-icon">📭</div><h3>Belum ada portofolio</h3></div>`;
+      return;
+    }
+    grid.innerHTML = filtered.map(p => `
+      <div class="portfolio-card">
+        <div class="card-image">${p.image ? `<img src="${p.image}" alt="${p.title}">` : '🎨'}</div>
+        <div class="card-body">
+          <span class="card-category">${p.category}</span>
+          <h3 class="card-title">${p.title}</h3>
+          ${p.tech ? `<p style="color:var(--red);font-size:0.8rem;font-weight:600;margin-bottom:8px;">🛠️ ${p.tech}</p>` : ''}
+          <p class="card-desc">${p.description}</p>
+          <div class="card-actions">
+            ${p.link ? `<a href="${p.link}" target="_blank" class="btn btn-secondary btn-small">🔗 Demo</a>` : ''}
+            <button class="btn btn-secondary btn-small admin-only" onclick="editPortfolio(${p.id})">✏️ Edit</button>
+            <button class="btn btn-danger btn-small admin-only" onclick="deletePortfolio(${p.id})">🗑️ Hapus</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ============ PHOTO UPLOAD ============
+  function triggerPhotoUpload() {
+    if (!isAdmin) return;
+    document.getElementById('photoUpload').click();
+  }
+
+  function handlePhotoUpload(event) {
+    const file = event.target.files[0];
+    if (file) processImage(file, (base64) => {
+      data.profile.photo = base64;
+      saveData(); renderHero();
+    });
+  }
+
+  function handlePhotoUpload2(event) {
+    const file = event.target.files[0];
+    if (file) processImage(file, (base64) => {
+      data.profile.photo = base64;
+      saveData(); renderHero();
+      const box = document.getElementById('photoUploadBox');
+      box.classList.add('has-image');
+      box.innerHTML = `<img src="${base64}"><input type="file" id="photoUpload2" accept="image/*" onchange="handlePhotoUpload2(event)">`;
+    });
+  }
+
+  function processImage(file, callback) {
+    if (file.size > 2 * 1024 * 1024) {
+      alert('⚠️ Ukuran file terlalu besar! Max 2MB.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      // Compress image
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const MAX = 800;
+        let w = img.width, h = img.height;
+        if (w > h) { if (w > MAX) { h = h * MAX / w; w = MAX; } }
+        else { if (h > MAX) { w = w * MAX / h; h = MAX; } }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        callback(canvas.toDataURL('image/jpeg', 0.8));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ============ PORTFOLIO MODAL ============
+  function openPortfolioModal() {
+    document.getElementById('portfolioModalTitle').textContent = '➕ Tambah Portofolio';
+    document.getElementById('portfolioForm').reset();
+    document.getElementById('editId').value = '';
+    tempPortfolioImage = '';
+    const box = document.getElementById('portfolioImageBox');
+    box.classList.remove('has-image');
+    box.innerHTML = `<div class="image-upload-label" id="portfolioImageLabel">🖼️ <strong>Klik untuk upload gambar</strong><br><small>Max 2MB, format JPG/PNG</small></div><input type="file" id="portfolioImageInput" accept="image/*" onchange="handlePortfolioImage(event)">`;
+    document.getElementById('portfolioModal').classList.add('active');
+  }
+  function closePortfolioModal() { document.getElementById('portfolioModal').classList.remove('active'); }
+
+  function handlePortfolioImage(event) {
+    const file = event.target.files[0];
+    if (file) processImage(file, (base64) => {
+      tempPortfolioImage = base64;
+      const box = document.getElementById('portfolioImageBox');
+      box.classList.add('has-image');
+      box.innerHTML = `<img src="${base64}"><input type="file" id="portfolioImageInput" accept="image/*" onchange="handlePortfolioImage(event)">`;
+    });
+  }
+
+  document.getElementById('portfolioForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const editId = document.getElementById('editId').value;
+    const newData = {
+      title: document.getElementById('pTitle').value,
+      category: document.getElementById('pCategory').value,
+      description: document.getElementById('pDescription').value,
+      tech: document.getElementById('pTech').value,
+      link: document.getElementById('pLink').value,
+      image: tempPortfolioImage || (editId ? data.portfolios.find(p => p.id == editId).image : '')
+    };
+    if (editId) {
+      const idx = data.portfolios.findIndex(p => p.id == editId);
+      data.portfolios[idx] = { ...data.portfolios[idx], ...newData };
+    } else {
+      const newId = data.portfolios.length > 0 ? Math.max(...data.portfolios.map(p => p.id)) + 1 : 1;
+      data.portfolios.push({ id: newId, ...newData });
+    }
+    saveData(); renderFilters(); renderPortfolio(); closePortfolioModal();
+  });
+
+  function editPortfolio(id) {
+    const p = data.portfolios.find(p => p.id === id);
+    if (!p) return;
+    document.getElementById('editId').value = p.id;
+    document.getElementById('pTitle').value = p.title;
+    document.getElementById('pCategory').value = p.category;
+    document.getElementById('pDescription').value = p.description;
+    document.getElementById('pTech').value = p.tech || '';
+    document.getElementById('pLink').value = p.link || '';
+    tempPortfolioImage = p.image || '';
+    const box = document.getElementById('portfolioImageBox');
+    if (p.image) {
+      box.classList.add('has-image');
+      box.innerHTML = `<img src="${p.image}"><input type="file" id="portfolioImageInput" accept="image/*" onchange="handlePortfolioImage(event)">`;
+    } else {
+      box.classList.remove('has-image');
+      box.innerHTML = `<div class="image-upload-label">🖼️ <strong>Klik untuk upload gambar</strong><br><small>Max 2MB, format JPG/PNG</small></div><input type="file" id="portfolioImageInput" accept="image/*" onchange="handlePortfolioImage(event)">`;
+    }
+    document.getElementById('portfolioModalTitle').textContent = '✏️ Edit Portofolio';
+    document.getElementById('portfolioModal').classList.add('active');
+  }
+
+  function deletePortfolio(id) {
+    if (confirm('Yakin ingin menghapus?')) {
+      data.portfolios = data.portfolios.filter(p => p.id !== id);
+      saveData(); renderFilters(); renderPortfolio();
+    }
+  }
+
+  // ============ SETTINGS ============
+  function openSettings() {
+    const p = data.profile;
+    document.getElementById('setBadge').value = p.badge || '';
+    document.getElementById('setName').value = p.name;
+    document.getElementById('setTitle').value = p.title;
+    document.getElementById('setBio').value = p.bio;
+    document.getElementById('setLocation').value = p.location || '';
+    document.getElementById('setEmail').value = p.email || '';
+    document.getElementById('setPhone').value = p.phone || '';
+    document.getElementById('setBirth').value = p.birth || '';
+    document.getElementById('setEducation').value = p.education || '';
+    document.getElementById('setExperience').value = p.experience || '';
+    document.getElementById('setGithub').value = p.socials.github || '';
+    document.getElementById('setLinkedin').value = p.socials.linkedin || '';
+    document.getElementById('setInstagram').value = p.socials.instagram || '';
+    document.getElementById('setTwitter').value = p.socials.twitter || '';
+    document.getElementById('setWebsite').value = p.socials.website || '';
+    document.getElementById('setPassword').value = '';
+    const box = document.getElementById('photoUploadBox');
+    if (p.photo) {
+      box.classList.add('has-image');
+      box.innerHTML = `<img src="${p.photo}"><input type="file" id="photoUpload2" accept="image/*" onchange="handlePhotoUpload2(event)">`;
+    } else {
+      box.classList.remove('has-image');
+      box.innerHTML = `<div class="image-upload-label">📷 <strong>Klik untuk upload</strong> atau ganti foto</div><input type="file" id="photoUpload2" accept="image/*" onchange="handlePhotoUpload2(event)">`;
+    }
+    document.getElementById('settingsModal').classList.add('active');
+  }
+  function closeSettings() { document.getElementById('settingsModal').classList.remove('active'); }
+
+  document.getElementById('settingsForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    data.profile = {
+      badge: document.getElementById('setBadge').value,
+      name: document.getElementById('setName').value,
+      title: document.getElementById('setTitle').value,
+      bio: document.getElementById('setBio').value,
+      photo: data.profile.photo,
+      location: document.getElementById('setLocation').value,
+      email: document.getElementById('setEmail').value,
+      phone: document.getElementById('setPhone').value,
+      birth: document.getElementById('setBirth').value,
+      education: document.getElementById('setEducation').value,
+      experience: document.getElementById('setExperience').value,
+      socials: {
+        github: document.getElementById('setGithub').value,
+        linkedin: document.getElementById('setLinkedin').value,
+        instagram: document.getElementById('setInstagram').value,
+        twitter: document.getElementById('setTwitter').value,
+        website: document.getElementById('setWebsite').value
+      }
+    };
+    const newPwd = document.getElementById('setPassword').value;
+    if (newPwd) {
+      data.admin.passwordHash = await hashPassword(newPwd);
+      alert('🔑 Password berhasil diubah!');
+    }
+    saveData(); renderHero(); renderBiodata(); closeSettings();
+    alert('✅ Profil berhasil diperbarui!');
+  });
+
+  // ============ UPDATE WEBSITE (Download HTML Final) ============
+  function updateWebsite() {
+    if (!confirm('📥 Download file HTML terbaru?\n\nSetelah download, upload ulang ke Netlify untuk update website Anda.')) return;
+
+    // Clone HTML
+    const clone = document.documentElement.cloneNode(true);
+
+    // Hapus admin banner
+    const banner = clone.querySelector('.admin-banner');
+    if (banner) banner.remove();
+
+    // Hapus semua elemen admin-only
+    clone.querySelectorAll('.admin-only').forEach(el => el.remove());
+
+    // Hapus trigger login dari footer (karena di versi final, login tetap ada)
+    // Tapi kita biarkan saja, biar user bisa login di Netlify juga
+
+    // Hapus modal settings, portfolio, cv (karena tidak perlu di versi final)
+    // TAPI kita perlu modal login, jadi biarkan
+    clone.querySelectorAll('#settingsModal, #portfolioModal, #cvModal').forEach(m => m.remove());
+
+    // Hapus input file
+    clone.querySelectorAll('input[type="file"]').forEach(i => i.remove());
+
+    // Ganti script dengan versi final (data di-hardcode, tanpa fungsi edit)
+    const script = clone.querySelector('script');
+    const safeData = JSON.stringify(data);
+    script.textContent = `
+    const data = ${safeData};
+    let currentFilter = 'Semua';
+    let isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+
+    async function hashPassword(password) {
+      const encoder = new TextEncoder();
+      const dataBytes = encoder.encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', dataBytes);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function updateAdminBanner() {
+      const banner = document.getElementById('adminBanner');
+      if (banner) banner.classList.toggle('active', isAdmin);
+    }
+
+    function openLoginModal() {
+      if (isAdmin) { alert('Anda sudah login sebagai admin'); return; }
+      document.getElementById('loginModal').classList.add('active');
+    }
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('active');
+      document.getElementById('loginPassword').value = '';
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const pwd = document.getElementById('loginPassword').value;
+      const hash = await hashPassword(pwd);
+      if (hash === data.admin.passwordHash) {
+        isAdmin = true;
+        sessionStorage.setItem('isAdmin', 'true');
+        document.body.classList.add('admin-mode');
+        updateAdminBanner();
+        closeLoginModal();
+        alert('✅ Login berhasil! Anda bisa edit, tapi perubahan hanya tersimpan di browser ini.\\n\\nUntuk update permanen, gunakan file HTML editor di komputer Anda.');
+        renderAll();
+      } else {
+        alert('❌ Password salah!');
+      }
+    });
+
+    function logoutAdmin() {
+      if (confirm('Logout?')) {
+        isAdmin = false;
+        sessionStorage.removeItem('isAdmin');
+        document.body.classList.remove('admin-mode');
+        updateAdminBanner();
+        renderAll();
+      }
+    }
+
+    function renderHero() {
+      const p = data.profile;
+      document.getElementById('heroBadge').textContent = p.badge || '✨ Selamat Datang';
+      document.getElementById('heroName').textContent = p.name;
+      document.getElementById('heroTitle').textContent = p.title;
+      document.getElementById('heroBio').textContent = p.bio;
+      document.getElementById('footerName').textContent = p.name;
+      const photo = document.getElementById('heroPhoto');
+      photo.innerHTML = p.photo ? '<img src="' + p.photo + '">' : '👤';
+    }
+
+    function renderBiodata() {
+      const p = data.profile;
+      const items = [
+        { icon: '👤', label: 'Nama', value: p.name },
+        { icon: '💼', label: 'Profesi', value: p.title },
+        { icon: '📍', label: 'Lokasi', value: p.location || '-' },
+        { icon: '📧', label: 'Email', value: p.email, link: p.email ? 'mailto:' + p.email : '' },
+        { icon: '📱', label: 'Telepon', value: p.phone, link: p.phone ? 'tel:' + p.phone.replace(/\\s/g,'') : '' },
+        { icon: '🎂', label: 'Tanggal Lahir', value: p.birth || '-' },
+        { icon: '🎓', label: 'Pendidikan', value: p.education || '-' },
+        { icon: '💼', label: 'Pengalaman', value: p.experience || '-' }
+      ];
+      document.getElementById('biodataGrid').innerHTML = items.map(item => '<div class="biodata-item"><div class="biodata-icon">' + item.icon + '</div><div class="biodata-info"><div class="biodata-label">' + item.label + '</div><div class="biodata-value">' + (item.link ? '<a href="' + item.link + '">' + item.value + '</a>' : item.value) + '</div></div></div>').join('');
+      const socials = [{ key: 'github', icon: '🐙' }, { key: 'linkedin', icon: '💼' }, { key: 'instagram', icon: '📷' }, { key: 'twitter', icon: '🐦' }, { key: 'website', icon: '🌐' }];
+      document.getElementById('socialsContainer').innerHTML = socials.filter(s => p.socials[s.key]).map(s => '<a href="' + p.socials[s.key] + '" target="_blank" class="social-link">' + s.icon + '</a>').join('');
+    }
+
+    function renderSkills() {
+      document.getElementById('skillsGrid').innerHTML = data.skills.map(s => '<div class="skill-tag">' + s + '</div>').join('') || '<p style="color:var(--muted);">Belum ada skill.</p>';
+    }
+
+    function renderCV() {
+      const container = document.getElementById('cvContainer');
+      const sections = [
+        { key: 'experience', title: '💼 Pengalaman Kerja' },
+        { key: 'education', title: '🎓 Pendidikan' },
+        { key: 'certification', title: '🏆 Sertifikasi' },
+        { key: 'language', title: '🌐 Bahasa' }
+      ];
+      container.innerHTML = sections.map(sec => {
+        const items = data.cv[sec.key] || [];
+        if (items.length === 0) return '';
+        return '<div class="cv-block"><h3 class="cv-block-title">' + sec.title + '</h3>' + items.map(item => '<div class="cv-item"><div class="cv-item-header"><div class="cv-item-title">' + item.title + '</div>' + (item.period ? '<div class="cv-item-period">' + item.period + '</div>' : '') + '</div><div class="cv-item-subtitle">' + (item.company || '') + '</div>' + (item.desc ? '<div class="cv-item-desc">' + item.desc + '</div>' : '') + '</div>').join('') + '</div>';
+      }).join('');
+    }
+
+    function renderFilters() {
+      const categories = ['Semua', ...new Set(data.portfolios.map(p => p.category))];
+      document.getElementById('filterBar').innerHTML = categories.map(cat => '<button class="filter-btn ' + (cat === currentFilter ? 'active' : '') + '" onclick="setFilter(\\'' + cat + '\\')">' + cat + '</button>').join('');
+    }
+    function setFilter(cat) { currentFilter = cat; renderFilters(); renderPortfolio(); }
+
+    function renderPortfolio() {
+      const filtered = currentFilter === 'Semua' ? data.portfolios : data.portfolios.filter(p => p.category === currentFilter);
+      const grid = document.getElementById('portfolioGrid');
+      if (filtered.length === 0) { grid.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><h3>Belum ada portofolio</h3></div>'; return; }
+      grid.innerHTML = filtered.map(p => '<div class="portfolio-card"><div class="card-image">' + (p.image ? '<img src="' + p.image + '">' : '🎨') + '</div><div class="card-body"><span class="card-category">' + p.category + '</span><h3 class="card-title">' + p.title + '</h3>' + (p.tech ? '<p style="color:var(--red);font-size:0.8rem;font-weight:600;margin-bottom:8px;">🛠️ ' + p.tech + '</p>' : '') + '<p class="card-desc">' + p.description + '</p><div class="card-actions">' + (p.link ? '<a href="' + p.link + '" target="_blank" class="btn btn-secondary btn-small">🔗 Demo</a>' : '') + '</div></div></div>').join('');
+    }
+
+    function renderAll() { renderHero(); renderBiodata(); renderSkills(); renderCV(); renderFilters(); renderPortfolio(); }
+
+    // Init
+    if (isAdmin) document.body.classList.add('admin-mode');
+    updateAdminBanner();
+    renderAll();
+    `;
+
+    // Download
+    const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `portofolio-${data.profile.name.replace(/\s+/g, '-').toLowerCase()}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    setTimeout(() => {
+      alert('✅ File berhasil didownload!\n\n📤 Langkah selanjutnya:\n1. Buka netlify.com/drop\n2. Upload file yang baru didownload\n3. Website Anda akan otomatis terupdate!\n\n🔐 Untuk edit lagi di masa depan:\n- Buka website di Netlify\n- Scroll ke footer, klik "🔐 Admin Login"\n- Masukkan password Anda\n- Edit data (tersimpan di browser)\n- Untuk update permanen, gunakan file HTML editor ini lagi');
+    }, 500);
+  }
+
+  // Tutup modal saat klik di luar
+  document.querySelectorAll('.modal-overlay').forEach(o => {
+    o.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
+  });
+
+  // ============ INIT ============
+  initAdmin();
+  renderHero(); renderBiodata(); renderSkills(); renderCV(); renderFilters(); renderPortfolio();
+</script>
+
+</body>
+</html>
